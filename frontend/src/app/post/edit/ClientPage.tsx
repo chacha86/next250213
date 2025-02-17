@@ -1,52 +1,37 @@
 "use client";
-
 import client from "@/lib/backend/client";
 import { useRouter } from "next/navigation";
-
 export default function ClinetPage() {
   const router = useRouter();
-
   async function write(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     const form = e.target as HTMLFormElement;
-
     const title = form._title.value;
     const content = form.content.value;
     const published = form.published.checked;
     const listed = form.listed.checked;
-
     if (title.trim().length === 0) {
       alert("제목을 입력해주세요.");
       return;
     }
-
     if (content.trim().length === 0) {
       alert("내용을 입력해주세요.");
       return;
     }
-
-    const response = await client.POST("/api/v1/posts", {
-      body: {
-        title,
-        content,
-        published,
-        listed,
-      },
-      credentials: "include",
-    });
-
-    if (response.error) {
-      alert(response.error.msg);
-      return;
-    }
-
-    const post = response.data.data;
-
-    // 목록으로 이동, 내가 방금 작성한 글 상세 페이지 이동 => 리액트 방식의 페이지 이동
-    router.push(`/post/${post.id}`);
+    // client.PUT("/api/v1/posts/{id}", {
+    //   body: {
+    //     content
+    //   },
+    //   credentials: "include",
+    // });
+    // if (response.error) {
+    //   alert(response.error.msg);
+    //   return;
+    // }
+    // const post = response.data.data;
+    // // 목록으로 이동, 내가 방금 작성한 글 상세 페이지 이동 => 리액트 방식의 페이지 이동
+    // router.push(`/post/${post.id}`);
   }
-
   return (
     <>
       <h1>글 작성 페이지</h1>
